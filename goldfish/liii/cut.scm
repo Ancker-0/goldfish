@@ -43,7 +43,9 @@
         (when
           (or (> (length more-slots) 1)
               (not (more-slot? (last paras))))
-          (error 'syntax-error "<...> must be the last parameter of cut"))
+          (error 'syntax-error "<...> must be the last argument of cut"))
+        (when (= (length paras) 1)
+          (error 'syntax-error "<...> cannot be the only argument of cut"))
         (let ((parsed (parse xs paras)))
           `(lambda (,@xs . ,rest) (apply ,@parsed)))))))
 

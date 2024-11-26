@@ -20,6 +20,7 @@
 (check-set-mode! 'report-failed)
 
 (check ((cut list <> 'y <>) 'x 'z) => '(x y z))
+(check ((cut list <> 'y <...>) 'x 'z 'w) => '(x y z w))
 (check ((cut + 1 <...>) 2 3) => 6)
 (check ((cut + 1 <...>)) => 1)
 (check ((cut <> 1 <...>) + 2 3) => 6)
@@ -33,6 +34,24 @@
 (check-catch 'wrong-number-of-args ((cut list <> <>) 1))
 (check-catch 'wrong-number-of-args ((cut list <> <> <...>) 1))
 (check-catch 'syntax-error ((cut list <> <> <...> <>) 1 2 3))
+(check-catch 'syntax-error ((cut <...>) list 1 2 3))
+
+(check ((cute list <> 'y <>) 'x 'z) => '(x y z))
+(check ((cute list <> 'y <...>) 'x 'z 'w) => '(x y z w))
+(check ((cute + 1 <...>) 2 3) => 6)
+(check ((cute + 1 <...>)) => 1)
+(check ((cute <> 1 <...>) + 2 3) => 6)
+(check ((cute list <> <> <...>) 1 2 3) => '(1 2 3))
+(check ((cute list <> <> <...>) 1 2) => '(1 2))
+(check ((cute + 1 2)) => 3)
+(check ((cute <>) list) => ())
+(check ((cute)) => ())
+(check ((cute <> #t <...>) if 1 0) => 1)
+
+(check-catch 'wrong-number-of-args ((cute list <> <>) 1))
+(check-catch 'wrong-number-of-args ((cute list <> <> <...>) 1))
+(check-catch 'syntax-error ((cute list <> <> <...> <>) 1 2 3))
+(check-catch 'syntax-error ((cute <...>) list 1 2 3))
 
 (let* ((a 1)
        (f (cut <> (set! a 2))))
